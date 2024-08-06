@@ -30,7 +30,7 @@
 npm install
 ```
 ## 调试运行
-**可参考package.json文件和https://uniapp.dcloud.net.cn/worktile/CLI.html**
+**参考package.json文件和https://uniapp.dcloud.net.cn/worktile/CLI.html**
 - h5
 ```
 npm run dev:h5
@@ -44,7 +44,7 @@ npm run dev:mp-weixin
 npm run dev:app
 ```
 ## 打包
-**生成的包存放在dist目录下,打包前先确认manifest.json文件设置，请参考https://uniapp.dcloud.net.cn/collocation/manifest.html**
+**生成的包存放在dist目录下,打包前先确认manifest.json文件设置，参考https://uniapp.dcloud.net.cn/collocation/manifest.html**
 - h5
 ```
 npm run build:h5

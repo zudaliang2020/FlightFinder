@@ -53,8 +53,11 @@
 
     .scroll {
       height: calc(100vh - 274rpx);
+      overflow: scroll;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      overflow-x: hidden;
+      overflow-y: hidden;
     }
 
     .scroll::-webkit-scrollbar {
@@ -62,12 +65,11 @@
     }
 
     .null-Info {
-      width: 100vw;
-      height: calc(100vh - 274rpx);
       line-height: calc(100vh - 274rpx);
       text-align: center;
+      
     }
-
+    
     .tr {
       display: flex;
       justify-content: center;

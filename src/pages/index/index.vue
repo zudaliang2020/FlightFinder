@@ -27,13 +27,12 @@
           <view class="th"><text>机位-准备室</text></view>
           <view class="th"><text>机组</text></view>
         </view>
-        <scroll-view class="scroll" scroll-x="false" scroll-y="true" upper-threshold="50" lower-threshold="50"
-          scroll-top="0" scroll-left="0" refresher-enabled="true" refresher-background="#25324F"
-          :refresher-triggered="refresherTriggered" @refresherpulling="refresherFlight"
+        <scroll-view class="scroll" scroll-x="false" scroll-y="true" refresher-enabled="true"
+          refresher-background="#25324F" :refresher-triggered="refresherTriggered" @refresherpulling="refresherFlight(true)"
           @scrolltolower="refresherFlight">
 
           <template v-if="flight.length === 0">
-            <view class="null-Info" @click="refresherFlight">暂无航班信息~~点击刷新~~</view>
+            <view class="null-Info" @click="refresherFlight(true)">暂无航班信息~~点击刷新~~</view>
           </template>
           <template v-else>
             <view v-for="(item, index) in flight" :key="item.flightNumber" class="tr"
@@ -186,8 +185,10 @@ onResize(() => {
 
 //航班信息刷新
 let count = 1;
-function refresherFlight() {
-  refresherTriggered.value = true;
+function refresherFlight(isTrigger) { //isTrigger是否显示需要下拉刷新
+  if(isTrigger){
+    refresherTriggered.value = true;
+  }
   setTimeout(() => { //定时器模拟网络延迟
     refresherTriggered.value = false;
     if (count == 1) {
@@ -198,6 +199,8 @@ function refresherFlight() {
       flight.value = getFlightData().items4; //第三次刷新
     }
     count++;
+    isDown = false;
+    sortByFlightSchedule();
   }, 1000)
 
 }
@@ -243,6 +246,7 @@ function close() {
 // 显示&隐藏收藏
 // 定义 refs 和初始变量
 let startX = 0; // 鼠标或触摸的起始位置
+let startY = 0;
 let isDragging = false; // 标志变量，用于确定是否正在拖动
 let key = 0; //标志变量，用于确定当前点击的是key行
 const isShow = ref(new Array(flight.value.length).fill(false)); //标志变量，用于标志第key行收藏是否显示
@@ -250,6 +254,7 @@ const isShow = ref(new Array(flight.value.length).fill(false)); //标志变量�
 // 鼠标事件处理函数
 const startDrag = (index, event) => {
   startX = event.clientX; // 记录鼠标按下时的 X 坐标
+  startY = event.clientY // 记录鼠标按下时的 y 坐标
   isDragging = true; // 设置拖动标志为 true
   key = index; // 记录鼠标按下时的行数
   document.addEventListener('mousemove', onMouseMove); // 监听鼠标移动事件
@@ -259,11 +264,16 @@ const startDrag = (index, event) => {
 const onMouseMove = (event) => {
   if (!isDragging) return; // 如果不是拖动状态，直接返回
   const deltaX = event.clientX - startX; // 计算拖动的水平距离
-  if (deltaX > -50) { // 鼠标拖动向右，关闭收藏夹
-    isShow.value[key] = false;
-  } else { // 鼠标拖动向左，显示收藏夹
-    isShow.value[key] = true;
+  const deltaY = event.clientY - startY; // 计算拖动的水平距离
+  console.log(deltaY);
+  if (Math.abs(deltaY) < 1) {
+    if (deltaX > 0) { // 鼠标拖动向右，关闭收藏夹
+      isShow.value[key] = false;
+    } else { // 鼠标拖动向左，显示收藏夹
+      isShow.value[key] = true;
+    }
   }
+
 };
 
 const stopDrag = () => {
@@ -275,17 +285,23 @@ const stopDrag = () => {
 // 触摸事件处理函数
 const startTouch = (index, event) => {
   startX = event.touches[0].clientX; // 记录触摸开始时的 X 坐标
+  startY = event.touches[0].clientY; // 记录触摸开始时的 Y 坐标
   key = index; // 记录触摸开始时的行数
 };
 
 const onTouchMove = (event) => {
   const currentTouchX = event.touches[0].clientX; // 当前触摸点的 X 坐标
   const deltaX = currentTouchX - startX; // 计算触摸滑动的水平距离
-  if (deltaX > -50) { // 触摸滑动向右，关闭收藏夹
-    isShow.value[key] = false;
-  } else { // 触摸滑动向左，显示收藏夹
-    isShow.value[key] = true;
+  const currentTouchY = event.touches[0].clientY; // 当前触摸点的 X 坐标
+  const deltaY = currentTouchY - startY; // 计算触摸滑动的水平距离
+  if (Math.abs(deltaY) < 5) {
+    if (deltaX > 0) { // 触摸滑动向右，关闭收藏夹
+      isShow.value[key] = false;
+    } else { // 触摸滑动向左，显示收藏夹
+      isShow.value[key] = true;
+    }
   }
+
 };
 
 const endTouch = () => {
