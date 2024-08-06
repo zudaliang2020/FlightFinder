@@ -1,3 +1,6 @@
+# Uniapp + Vue3
+## 目录结构
+```
 ├─.gitignore------------ # Git忽略文件，列出了在版本控制中应忽略的文件和目录
 ├─index.html------------ # 入口HTML文件，应用启动时将加载该文件
 ├─package-lock.json----- # 记录确切的依赖版本，以确保环境一致性
@@ -20,3 +23,37 @@
 │ ├─static-------------- # 静态资源文件夹（图片、字体等）
 │ └─uni.scss------------ # 应用的全局SCSS样式文件
 └─vite.config.js-------- # Vite的配置文件，定义构建和开发服务器设置
+```
+## 开始
+### 安装依赖
+```
+npm install
+```
+## 调试运行
+**可参考package.json文件和https://uniapp.dcloud.net.cn/worktile/CLI.html**
+- h5
+```
+npm run dev:h5
+```
+- 微信小程序
+```
+npm run dev:mp-weixin
+```
+- app
+```
+npm run dev:app
+```
+## 打包
+**生成的包存放在dist目录下,打包前先确认manifest.json文件设置，请参考https://uniapp.dcloud.net.cn/collocation/manifest.html**
+- h5
+```
+npm run build:h5
+```
+- 微信小程序
+```
+npm run build:mp-weixin
+```
+- app
+```
+npm run build:app
+```
