@@ -57,5 +57,3 @@ npm run build:mp-weixin
 ```
 npm run build:app
 ```
-
-└─vite.config.js-------- # Vite的配置文件，定义构建和开发服务器设置
