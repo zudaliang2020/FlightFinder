@@ -6,6 +6,7 @@
 			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
 		}
 	},
+	// 页面
 	"pages": [
 		{
 			"path": "pages/index/index",
